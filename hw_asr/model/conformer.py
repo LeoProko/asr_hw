@@ -154,7 +154,7 @@ class Conformer(BaseModel):
         max_length = int(torch.max(batch["spectrogram_length"]).item())
         mask = torch.arange(max_length, device=spectrogram.device).expand(
             batch["spectrogram_length"].size(0), max_length
-        ) >= batch["spectrogram_length"].unsqueeze(1)
+        ) >= batch["spectrogram_length"].unsqueeze(1).to(spectrogram.device)
 
         x = spectrogram.transpose(1, 2)
         for layer in self.conformer_layers:
