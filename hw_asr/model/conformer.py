@@ -100,9 +100,10 @@ class ConformerLayer(nn.Module):
         self.norm = nn.LayerNorm(input_dim)
 
     def forward(
-        self, input: torch.Tensor, key_padding_mask: torch.Tensor | None
+        self, input: torch.Tensor, key_padding_mask: torch.Tensor
     ) -> torch.Tensor:
-        x = self.ffn1(input) / 2 + x
+        x = input
+        x = self.ffn1(x) / 2 + x
 
         skip_connection = x
         x = self.attention_norm(x)
