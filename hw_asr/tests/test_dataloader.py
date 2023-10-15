@@ -1,6 +1,6 @@
 import unittest
 
-from tqdm import tqdm
+from tqdm.auto import tqdm
 
 from hw_asr.collate_fn.collate import collate_fn
 from hw_asr.datasets import LibrispeechDataset

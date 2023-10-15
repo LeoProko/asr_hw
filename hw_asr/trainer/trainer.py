@@ -8,7 +8,7 @@ import torch
 import torch.nn.functional as F
 from torch.nn.utils import clip_grad_norm_
 from torchvision.transforms import ToTensor
-from tqdm import tqdm
+from tqdm.auto import tqdm
 
 from hw_asr.base import BaseTrainer
 from hw_asr.base.base_text_encoder import BaseTextEncoder

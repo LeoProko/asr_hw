@@ -4,7 +4,7 @@ import os
 from pathlib import Path
 
 import torch
-from tqdm import tqdm
+from tqdm.auto import tqdm
 
 import hw_asr.model as module_model
 from hw_asr.trainer import Trainer

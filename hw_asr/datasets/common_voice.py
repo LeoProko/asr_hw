@@ -5,7 +5,7 @@ import json
 import torchaudio
 from datasets import load_dataset
 import re
-from tqdm import tqdm
+from tqdm.auto import tqdm
 
 from hw_asr.base.base_dataset import BaseDataset
 from hw_asr.utils import ROOT_PATH
