@@ -15,10 +15,14 @@
     "spectrogram": []
   },
   "arch": {
-    "type": "BaselineModel",
+    "type": "Conformer",
     "args": {
-      "n_feats": 128,
-      "fc_hidden": 512
+      "input_dim": 128,
+      "num_heads": 4,
+      "ffn_dim": 256,
+      "num_layers": 4,
+      "kernel_size": 31,
+      "dropout": 0.1
     }
   },
   "data": {
@@ -109,9 +113,9 @@
     }
   },
   "trainer": {
-    "epochs": 50,
+    "epochs": 10,
     "save_dir": "saved/",
-    "save_period": 5,
+    "save_period": 2,
     "verbosity": 2,
     "monitor": "min val_loss",
     "early_stop": 100,

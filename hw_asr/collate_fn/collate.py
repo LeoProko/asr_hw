@@ -24,6 +24,9 @@ def collate_fn(dataset_items: List[dict]):
         "audio": pad_sequence(
             [item["audio"].squeeze() for item in dataset_items], batch_first=True
         ),
+        "audio_length": torch.tensor(
+            [item["audio"].squeeze().size(-1) for item in dataset_items]
+        ),
         "spectrogram": specs,
         "spectrogram_length": torch.tensor(
             [item["spectrogram"].squeeze().size(-1) for item in dataset_items]
