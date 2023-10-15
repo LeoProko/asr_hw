@@ -152,9 +152,9 @@ class Conformer(BaseModel):
 
     def forward(self, spectrogram, **batch) -> dict[str, torch.Tensor]:
         max_length = int(torch.max(batch["spectrogram_length"]).item())
-        mask = torch.arange(max_length).expand(
-            batch["spectrogram_length"].size(0), max_length, device=batch["spectrogram_length"].device
-        ) >= batch[
+        mask = torch.arange(
+            max_length, device=batch["spectrogram_length"].device
+        ).expand(batch["spectrogram_length"].size(0), max_length) >= batch[
             "spectrogram_length"
         ].unsqueeze(
             1
