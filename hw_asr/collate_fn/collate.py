@@ -23,21 +23,20 @@ def collate_fn(dataset_items: List[dict]):
     return {
         "audio": pad_sequence(
             [item["audio"].squeeze() for item in dataset_items], batch_first=True
-        ),
-        "audio_length": torch.tensor(
-            [item["audio"].squeeze().size(-1) for item in dataset_items]
-        ),
+        ).to(item["audio"].device),
         "spectrogram": specs,
         "spectrogram_length": torch.tensor(
-            [item["spectrogram"].squeeze().size(-1) for item in dataset_items]
+            [item["spectrogram"].squeeze().size(-1) for item in dataset_items],
+            device=item["spectrogram"].device,
         ),
         "duration": [item["duration"] for item in dataset_items],
         "text": [item["text"] for item in dataset_items],
         "text_encoded": pad_sequence(
             [item["text_encoded"].squeeze() for item in dataset_items], batch_first=True
-        ),
+        ).to(item["text_encoded"].device),
         "text_encoded_length": torch.tensor(
-            [len(item["text_encoded"].squeeze()) for item in dataset_items]
+            [len(item["text_encoded"].squeeze()) for item in dataset_items],
+            device=item["text_encoded"].device,
         ),
         "audio_path": [item["audio_path"] for item in dataset_items],
     }
