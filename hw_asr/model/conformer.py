@@ -13,10 +13,10 @@ class Convolution(nn.Module):
         dropout: float,
     ):
         super().__init__()
-        assert (kernel_size - 1) % 2 == 0
+        assert kernel_size % 2 == 1
 
         self.norm = nn.LayerNorm(input_dim)
-        self.seq = nn.Sequential(
+        self.layers = nn.Sequential(
             nn.Conv1d(
                 input_dim,
                 2 * num_channels,
@@ -30,7 +30,7 @@ class Convolution(nn.Module):
                 num_channels,
                 kernel_size,
                 stride=1,
-                padding=(kernel_size - 1) // 2,
+                padding=kernel_size // 2,
                 groups=num_channels,
             ),
             nn.BatchNorm1d(num_channels),
@@ -47,10 +47,10 @@ class Convolution(nn.Module):
 
     def forward(self, input: torch.Tensor) -> torch.Tensor:
         x = input
-        x = self.norm(input)
+        x = self.norm(x)
         x = x.transpose(0, 1)
         x = x.transpose(1, 2)
-        x = self.seq(x)
+        x = self.layers(x)
         x = x.transpose(1, 2)
         x = x.transpose(0, 1)
         return x
@@ -59,7 +59,7 @@ class Convolution(nn.Module):
 class FFN(nn.Module):
     def __init__(self, input_dim: int, hidden_dim: int, dropout: float) -> None:
         super().__init__()
-        self.sequential = nn.Sequential(
+        self.layers = nn.Sequential(
             nn.LayerNorm(input_dim),
             nn.Linear(input_dim, hidden_dim),
             nn.SiLU(),
@@ -69,7 +69,7 @@ class FFN(nn.Module):
         )
 
     def forward(self, input: torch.Tensor) -> torch.Tensor:
-        return self.sequential(input)
+        return self.layers(input)
 
 
 class ConformerLayer(nn.Module):
@@ -125,8 +125,8 @@ class ConformerLayer(nn.Module):
 class Conformer(BaseModel):
     def __init__(
         self,
-        input_dim: int,
         n_class: int,
+        input_dim: int,
         num_heads: int,
         ffn_dim: int,
         num_layers: int,
