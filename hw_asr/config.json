@@ -20,7 +20,7 @@
       {
         "type": "GaussianNoise",
         "args": {
-          "variance": 0.05
+          "variance": 0.005
         }
       },
       {
@@ -35,13 +35,13 @@
       {
         "type": "FreqMask",
         "args": {
-          "freq_mask_param": 40
+          "freq_mask_param": 30
         }
       },
       {
         "type": "TimeMask",
         "args": {
-          "time_mask_param": 40
+          "time_mask_param": 30
         }
       }
     ]
@@ -51,8 +51,8 @@
     "args": {
       "input_dim": 128,
       "num_heads": 4,
-      "ffn_dim": 128,
-      "num_layers": 4,
+      "ffn_dim": 256,
+      "num_layers": 16,
       "kernel_size": 31,
       "dropout": 0.1
     }
@@ -66,6 +66,15 @@
           "type": "LibrispeechDataset",
           "args": {
             "part": "train-clean-100",
+            "max_audio_length": 20.0,
+            "max_text_length": 200
+          },
+          "module": "hw_asr.datasets"
+        },
+        {
+          "type": "LibrispeechDataset",
+          "args": {
+            "part": "train-clean-360",
             "max_audio_length": 20.0,
             "max_text_length": 200
           },
@@ -113,7 +122,7 @@
   "optimizer": {
     "type": "Adam",
     "args": {
-      "lr": 3e-4
+      "lr": 4e-3
     }
   },
   "loss": {
@@ -132,6 +141,20 @@
       "args": {
         "name": "CER (argmax)"
       }
+    },
+    {
+      "type": "BeamSearchWERMetric",
+      "args": {
+        "name": "WER (beam search)",
+        "beam_size": 100
+      }
+    },
+    {
+      "type": "BeamSearchCERMetric",
+      "args": {
+        "name": "CER (beam search)",
+        "beam_size": 100
+      }
     }
   ],
   "lr_scheduler": {
@@ -140,11 +163,12 @@
       "steps_per_epoch": 100,
       "epochs": 50,
       "anneal_strategy": "cos",
-      "max_lr": 3e-4,
+      "max_lr": 4e-3,
       "pct_start": 0.1
     }
   },
   "trainer": {
+    "beam_size": 100,
     "epochs": 10,
     "save_dir": "saved/",
     "save_period": 2,

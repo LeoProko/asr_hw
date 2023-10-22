@@ -51,7 +51,7 @@
     "args": {
       "input_dim": 128,
       "num_heads": 4,
-      "ffn_dim": 128,
+      "ffn_dim": 256,
       "num_layers": 16,
       "kernel_size": 31,
       "dropout": 0.1
@@ -116,14 +116,14 @@
       "type": "BeamSearchWERMetric",
       "args": {
         "name": "WER (beam search)",
-        "beam_size": 10
+        "beam_size": 100
       }
     },
     {
       "type": "BeamSearchCERMetric",
       "args": {
         "name": "CER (beam search)",
-        "beam_size": 10
+        "beam_size": 100
       }
     }
   ],
@@ -134,11 +134,11 @@
       "epochs": 50,
       "anneal_strategy": "cos",
       "max_lr": 4e-3,
-      "pct_start": 0.2
+      "pct_start": 0.1
     }
   },
   "trainer": {
-    "beam_size": 10,
+    "beam_size": 100,
     "epochs": 50,
     "save_dir": "saved/",
     "save_period": 5,
