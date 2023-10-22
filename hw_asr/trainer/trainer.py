@@ -234,7 +234,7 @@ class Trainer(BaseTrainer):
         shuffle(tuples)
 
         rows = {}
-        for pred, log_prob, log_prob_length, target, raw_pred, audio_path in tuples[
+        for argmax_pred, log_prob, log_prob_length, target, raw_pred, audio_path in tuples[
             :examples_to_log
         ]:
             beam_pred = self.text_encoder.ctc_beam_search(
@@ -242,15 +242,20 @@ class Trainer(BaseTrainer):
             )
 
             target = BaseTextEncoder.normalize_text(target)
-            wer = calc_wer(target, pred) * 100
-            cer = calc_cer(target, pred) * 100
+            argmax_wer = calc_wer(target, argmax_pred) * 100
+            argmax_cer = calc_cer(target, argmax_pred) * 100
+            beam_wer = calc_wer(target, beam_pred) * 100
+            beam_cer = calc_cer(target, beam_pred) * 100
 
             rows[Path(audio_path).name] = {
                 "target": target,
                 "raw prediction": raw_pred,
-                "predictions": pred,
-                "wer": wer,
-                "cer": cer,
+                "argmax_pred": argmax_pred,
+                "beam_pred": beam_pred,
+                "argmax_wer": argmax_wer,
+                "argmax_cer": argmax_cer,
+                "beam_wer": beam_wer,
+                "beam_cer": beam_cer,
             }
         self.writer.add_table(
             "predictions", pd.DataFrame.from_dict(rows, orient="index")

@@ -35,13 +35,13 @@
       {
         "type": "FreqMask",
         "args": {
-          "freq_mask_param": 20
+          "freq_mask_param": 30
         }
       },
       {
         "type": "TimeMask",
         "args": {
-          "time_mask_param": 20
+          "time_mask_param": 30
         }
       }
     ]
