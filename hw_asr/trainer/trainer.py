@@ -234,9 +234,14 @@ class Trainer(BaseTrainer):
         shuffle(tuples)
 
         rows = {}
-        for argmax_pred, log_prob, log_prob_length, target, raw_pred, audio_path in tuples[
-            :examples_to_log
-        ]:
+        for (
+            argmax_pred,
+            log_prob,
+            log_prob_length,
+            target,
+            raw_pred,
+            audio_path,
+        ) in tuples[:examples_to_log]:
             beam_pred = self.text_encoder.ctc_beam_search(
                 log_prob.exp(), log_prob_length, self.config["trainer"]["beam_size"]
             )[0].text
