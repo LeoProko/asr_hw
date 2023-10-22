@@ -175,7 +175,7 @@ class Conformer(BaseModel):
         max_length = torch.max(batch["spectrogram_length"]).item()
         key_padding_mask = torch.arange(max_length, device=spectrogram.device).expand(
             batch["spectrogram_length"].size(0), max_length
-        ) >= batch["spectrogram_length"].unsqueeze(1)
+        ) >= batch["spectrogram_length"].unsqueeze(1).to(spectrogram.device)
 
         # x = spectrogram.transpose(0, 1)
         x = spectrogram.transpose(1, 2)
