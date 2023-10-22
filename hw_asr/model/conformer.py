@@ -4,7 +4,7 @@ from torch import nn
 from hw_asr.base import BaseModel
 
 
-class Convolution(nn.Module):
+class ConvolutionModule(nn.Module):
     def __init__(
         self,
         input_dim: int,
@@ -20,7 +20,7 @@ class Convolution(nn.Module):
             nn.Conv1d(
                 input_dim,
                 2 * num_channels,
-                1,
+                kernel_size=1,
                 stride=1,
                 padding=0,
             ),
@@ -46,17 +46,16 @@ class Convolution(nn.Module):
         )
 
     def forward(self, input: torch.Tensor) -> torch.Tensor:
-        x = input
-        x = self.norm(x)
-        x = x.transpose(0, 1)
+        x = self.norm(input)
+        # x = x.transpose(0, 1)
         x = x.transpose(1, 2)
         x = self.layers(x)
         x = x.transpose(1, 2)
-        x = x.transpose(0, 1)
-        return x
+        # x = x.transpose(0, 1)
+        return x + input
 
 
-class FFN(nn.Module):
+class FeedForwardModule(nn.Module):
     def __init__(self, input_dim: int, hidden_dim: int, dropout: float) -> None:
         super().__init__()
         self.layers = nn.Sequential(
@@ -69,44 +68,27 @@ class FFN(nn.Module):
         )
 
     def forward(self, input: torch.Tensor) -> torch.Tensor:
-        return self.layers(input)
+        # return (self.layers(input) + input) * 0.5 + input
+        return self.layers(input) * 0.5 + input
 
 
-class ConformerLayer(nn.Module):
+class MultiHeadSelfAttentionModule(nn.Module):
     def __init__(
         self,
         input_dim: int,
-        ffn_dim: int,
         num_attention_heads: int,
-        depthwise_conv_kernel_size: int,
-        dropout: float = 0.0,
-    ) -> None:
+        dropout: float,
+    ):
         super().__init__()
 
-        self.ffn1 = FFN(input_dim, ffn_dim, dropout)
-
-        self.attention = nn.MultiheadAttention(input_dim, num_attention_heads, dropout)
-        self.attention_norm = nn.LayerNorm(input_dim)
-        self.attention_dropout = nn.Dropout(dropout)
-
-        self.conv = Convolution(
-            input_dim=input_dim,
-            num_channels=input_dim,
-            kernel_size=depthwise_conv_kernel_size,
-            dropout=dropout,
-        )
-
-        self.ffn2 = FFN(input_dim, ffn_dim, dropout)
         self.norm = nn.LayerNorm(input_dim)
+        self.attention = nn.MultiheadAttention(input_dim, num_attention_heads, dropout)
+        self.dropout = nn.Dropout(dropout)
 
     def forward(
         self, input: torch.Tensor, key_padding_mask: torch.Tensor
     ) -> torch.Tensor:
-        x = input
-        x = self.ffn1(x) / 2 + x
-
-        skip_connection = x
-        x = self.attention_norm(x)
+        x = self.norm(input)
         x, _ = self.attention(
             query=x,
             key=x,
@@ -114,10 +96,47 @@ class ConformerLayer(nn.Module):
             key_padding_mask=key_padding_mask,
             need_weights=False,
         )
-        x = self.attention_dropout(x) + skip_connection
+        x = self.dropout(x)
 
-        x = self.conv(x) + x
-        x = self.norm(self.ffn2(x) / 2 + x)
+        return x + input
+
+
+class ConformerBlock(nn.Module):
+    def __init__(
+        self,
+        input_dim: int,
+        ffn_dim: int,
+        num_attention_heads: int,
+        kernel_size: int,
+        dropout: float,
+    ) -> None:
+        super().__init__()
+
+        self.ffn1 = FeedForwardModule(input_dim, ffn_dim, dropout)
+
+        self.attention = MultiHeadSelfAttentionModule(
+            input_dim, num_attention_heads, dropout
+        )
+
+        self.conv = ConvolutionModule(
+            input_dim=input_dim,
+            num_channels=input_dim,
+            kernel_size=kernel_size,
+            dropout=dropout,
+        )
+
+        self.ffn2 = FeedForwardModule(input_dim, ffn_dim, dropout)
+
+        self.norm = nn.LayerNorm(input_dim)
+
+    def forward(
+        self, input: torch.Tensor, key_padding_mask: torch.Tensor
+    ) -> torch.Tensor:
+        x = self.ffn1(input)
+        x = self.attention(x, key_padding_mask)
+        x = self.conv(x)
+        x = self.ffn2(x)
+        x = self.norm(x)
 
         return x
 
@@ -136,9 +155,9 @@ class Conformer(BaseModel):
     ):
         super().__init__(input_dim, n_class, **batch)
 
-        self.conformer_layers = nn.ModuleList(
+        self.blocks = nn.ModuleList(
             [
-                ConformerLayer(
+                ConformerBlock(
                     input_dim,
                     ffn_dim,
                     num_heads,
@@ -148,17 +167,20 @@ class Conformer(BaseModel):
                 for _ in range(num_layers)
             ]
         )
-        self.logits_layer = nn.Linear(in_features=ffn_dim, out_features=n_class)
+        self.logits_layer = nn.Linear(in_features=input_dim, out_features=n_class)
 
     def forward(self, spectrogram, **batch) -> dict[str, torch.Tensor]:
-        max_length = int(torch.max(batch["spectrogram_length"]).item())
-        mask = torch.arange(max_length, device=spectrogram.device).expand(
-            batch["spectrogram_length"].size(0), max_length
-        ) >= batch["spectrogram_length"].unsqueeze(1).to(spectrogram.device)
+        # spectrogram: (B, input_dim, L)
 
+        max_length = torch.max(batch["spectrogram_length"]).item()
+        key_padding_mask = torch.arange(max_length, device=spectrogram.device).expand(
+            batch["spectrogram_length"].size(0), max_length
+        ) >= batch["spectrogram_length"].unsqueeze(1)
+
+        # x = spectrogram.transpose(0, 1)
         x = spectrogram.transpose(1, 2)
-        for layer in self.conformer_layers:
-            x = layer(x, mask.T)
+        for block in self.blocks:
+            x = block(x, key_padding_mask.T)
 
         return {"logits": self.logits_layer(x)}
 
