@@ -30,7 +30,7 @@ class CTCCharTextEncoder(CharTextEncoder):
         )
 
     def ctc_beam_search(
-        self, probs: torch.tensor, probs_length, beam_size: int = 100
+        self, probs: torch.tensor, probs_length: int, beam_size: int = 100
     ) -> List[Hypothesis]:
         """
         Performs beam search and returns a list of pairs (hypothesis, hypothesis probability).
@@ -38,7 +38,43 @@ class CTCCharTextEncoder(CharTextEncoder):
         assert len(probs.shape) == 2
         char_length, voc_size = probs.shape
         assert voc_size == len(self.ind2char)
-        hypos: List[Hypothesis] = []
-        # # TODO: your code here
-        raise NotImplementedError
-        return sorted(hypos, key=lambda x: x.prob, reverse=True)
+
+        hypos = [("", 1, self.EMPTY_TOK)]
+
+        for char_probs in probs[:probs_length]:
+            char_probs, indices = char_probs.sort()
+            char_probs = char_probs[-beam_size:]
+            indices = indices[-beam_size:]
+
+            new_hypos = []
+
+            for next_char_prob, next_char_index in zip(char_probs, indices):
+                next_char = self.ind2char[next_char_index.item()]
+
+                for prefix, prob, prev_char in hypos:
+                    if next_char == self.EMPTY_TOK:
+                        new_hypos.append(
+                            (prefix, prob * next_char_prob.item(), self.EMPTY_TOK)
+                        )
+                    else:
+                        if next_char != prev_char:
+                            new_hypos.append(
+                                (
+                                    prefix + next_char,
+                                    prob * next_char_prob.item(),
+                                    next_char,
+                                )
+                            )
+                        else:
+                            new_hypos.append(
+                                (prefix, prob * next_char_prob.item(), prev_char)
+                            )
+
+            hypos = list(sorted(new_hypos, key=lambda x: x[1]))[-beam_size:]
+
+        return list(
+            map(
+                lambda x: Hypothesis(text=x[0], prob=x[1]),
+                sorted(hypos, key=lambda x: x[1], reverse=True),
+            )
+        )

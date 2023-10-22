@@ -220,10 +220,27 @@ class Trainer(BaseTrainer):
         ]
         argmax_texts_raw = [self.text_encoder.decode(inds) for inds in argmax_inds]
         argmax_texts = [self.text_encoder.ctc_decode(inds) for inds in argmax_inds]
-        tuples = list(zip(argmax_texts, text, argmax_texts_raw, audio_path))
+
+        tuples = list(
+            zip(
+                argmax_texts,
+                log_probs,
+                log_probs_length,
+                text,
+                argmax_texts_raw,
+                audio_path,
+            )
+        )
         shuffle(tuples)
+
         rows = {}
-        for pred, target, raw_pred, audio_path in tuples[:examples_to_log]:
+        for pred, log_prob, log_prob_length, target, raw_pred, audio_path in tuples[
+            :examples_to_log
+        ]:
+            beam_pred = self.text_encoder.ctc_beam_search(
+                log_prob.exp(), log_prob_length, self.config["trainer"]["beam_size"]
+            )
+
             target = BaseTextEncoder.normalize_text(target)
             wer = calc_wer(target, pred) * 100
             cer = calc_cer(target, pred) * 100
