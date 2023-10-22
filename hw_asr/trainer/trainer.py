@@ -239,7 +239,7 @@ class Trainer(BaseTrainer):
         ]:
             beam_pred = self.text_encoder.ctc_beam_search(
                 log_prob.exp(), log_prob_length, self.config["trainer"]["beam_size"]
-            )
+            )[0].text
 
             target = BaseTextEncoder.normalize_text(target)
             argmax_wer = calc_wer(target, argmax_pred) * 100
