@@ -116,14 +116,14 @@
       "type": "BeamSearchWERMetric",
       "args": {
         "name": "WER (beam search)",
-        "beam_size": 100
+        "beam_size": 10
       }
     },
     {
       "type": "BeamSearchCERMetric",
       "args": {
         "name": "CER (beam search)",
-        "beam_size": 100
+        "beam_size": 10
       }
     }
   ],
@@ -138,7 +138,7 @@
     }
   },
   "trainer": {
-    "beam_size": 100,
+    "beam_size": 10,
     "epochs": 50,
     "save_dir": "saved/",
     "save_period": 5,
