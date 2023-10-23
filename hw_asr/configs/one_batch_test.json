@@ -22,13 +22,6 @@
         "args": {
           "variance": 0.005
         }
-      },
-      {
-        "type": "Speedup",
-        "args": {
-          "speedup_min": 0.7,
-          "speedup_max": 1.3
-        }
       }
     ],
     "spectrogram": [
