@@ -1,3 +1,5 @@
+import typing as tp
+
 import torch
 from torch import nn
 
@@ -169,7 +171,7 @@ class Conformer(BaseModel):
         )
         self.logits_layer = nn.Linear(in_features=input_dim, out_features=n_class)
 
-    def forward(self, spectrogram, **batch) -> dict[str, torch.Tensor]:
+    def forward(self, spectrogram, **batch) -> tp.Dict[str, torch.Tensor]:
         # spectrogram: (B, input_dim, L)
 
         max_length = torch.max(batch["spectrogram_length"]).item()
