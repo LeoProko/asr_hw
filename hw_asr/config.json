@@ -70,6 +70,15 @@
             "max_text_length": 200
           },
           "module": "hw_asr.datasets"
+        },
+        {
+          "type": "LibrispeechDataset",
+          "args": {
+            "part": "train-clean-360",
+            "max_audio_length": 20.0,
+            "max_text_length": 200
+          },
+          "module": "hw_asr.datasets"
         }
       ]
     },
@@ -160,7 +169,7 @@
   },
   "trainer": {
     "beam_size": 100,
-    "epochs": 10,
+    "epochs": 15,
     "save_dir": "saved/",
     "save_period": 2,
     "verbosity": 2,
