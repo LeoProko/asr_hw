@@ -59,7 +59,7 @@
   },
   "data": {
     "train": {
-      "batch_size": 100,
+      "batch_size": 30,
       "num_workers": 5,
       "datasets": [
         {
@@ -83,7 +83,7 @@
       ]
     },
     "val": {
-      "batch_size": 100,
+      "batch_size": 30,
       "num_workers": 5,
       "datasets": [
         {
@@ -95,7 +95,7 @@
       ]
     },
     "test-other": {
-      "batch_size": 100,
+      "batch_size": 30,
       "num_workers": 5,
       "datasets": [
         {
@@ -107,7 +107,7 @@
       ]
     },
     "test-clean": {
-      "batch_size": 100,
+      "batch_size": 30,
       "num_workers": 5,
       "datasets": [
         {
