@@ -1,4 +1,5 @@
 from typing import List, NamedTuple
+from collections import defaultdict
 
 import torch
 
@@ -39,42 +40,31 @@ class CTCCharTextEncoder(CharTextEncoder):
         char_length, voc_size = probs.shape
         assert voc_size == len(self.ind2char)
 
-        hypos = [("", 1, self.EMPTY_TOK)]
+        hypos = {("", self.EMPTY_TOK): 1}
 
         for char_probs in probs[:probs_length]:
             char_probs, indices = char_probs.sort()
             char_probs = char_probs[-beam_size:]
             indices = indices[-beam_size:]
 
-            new_hypos = []
+            new_hypos = defaultdict(float)
 
             for next_char_prob, next_char_index in zip(char_probs, indices):
                 next_char = self.ind2char[next_char_index.item()]
 
-                for prefix, prob, prev_char in hypos:
-                    if next_char == self.EMPTY_TOK:
-                        new_hypos.append(
-                            (prefix, prob * next_char_prob.item(), self.EMPTY_TOK)
-                        )
-                    else:
-                        if next_char != prev_char:
-                            new_hypos.append(
-                                (
-                                    prefix + next_char,
-                                    prob * next_char_prob.item(),
-                                    next_char,
-                                )
-                            )
-                        else:
-                            new_hypos.append(
-                                (prefix, prob * next_char_prob.item(), prev_char)
-                            )
+                for (prefix, prev_char), prob in hypos.items():
+                    new_prefix = prefix
+                    if next_char != self.EMPTY_TOK and next_char != prev_char:
+                        new_prefix = prefix + next_char
+                    new_hypos[(new_prefix, next_char)] += prob * next_char_prob.item()
 
-            hypos = list(sorted(new_hypos, key=lambda x: x[1]))[-beam_size:]
+            hypos = dict(
+                list(sorted(new_hypos.items(), key=lambda x: -x[1]))[:beam_size]
+            )
 
         return list(
             map(
-                lambda x: Hypothesis(text=x[0], prob=x[1]),
-                sorted(hypos, key=lambda x: x[1], reverse=True),
+                lambda x: Hypothesis(text=x[0][0], prob=x[1]),
+                sorted(hypos.items(), key=lambda x: -x[1]),
             )
         )
