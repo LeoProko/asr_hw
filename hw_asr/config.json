@@ -169,13 +169,13 @@
   },
   "trainer": {
     "beam_size": 100,
-    "epochs": 15,
+    "epochs": 50,
     "save_dir": "saved/",
     "save_period": 2,
     "verbosity": 2,
     "monitor": "min val_loss",
     "early_stop": 100,
-    "visualize": "wandb",
+    "visualize": "andb",
     "wandb_project": "dla-1-asr",
     "len_epoch": 100,
     "grad_norm_clip": 10
