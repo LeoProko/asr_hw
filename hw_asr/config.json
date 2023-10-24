@@ -51,8 +51,8 @@
     "args": {
       "input_dim": 128,
       "num_heads": 4,
-      "ffn_dim": 256,
-      "num_layers": 16,
+      "ffn_dim": 128,
+      "num_layers": 8,
       "kernel_size": 31,
       "dropout": 0.1
     }
