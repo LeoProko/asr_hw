@@ -64,7 +64,7 @@ class LibrispeechDataset(BaseDataset):
     def _get_or_load_index(self, part):
         index_path = self._index_dir / f"{part}_index.json"
         if index_path.exists():
-            with index_path.open() as f:
+            with index_path.open("r") as f:
                 index = json.load(f)
         else:
             index = self._create_index(part)
