@@ -67,7 +67,7 @@
           "args": {
             "data_dir": "/home/jupyter/mnt/datasets/LibriSpeech/LibriSpeech",
             "index_dir": "/home/jupyter/work/resources/asr_hw",
-            "part": "train-all",
+            "part": "train_all",
             "max_audio_length": 20.0,
             "max_text_length": 200
           },
