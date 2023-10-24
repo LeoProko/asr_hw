@@ -47,14 +47,10 @@
     ]
   },
   "arch": {
-    "type": "Conformer",
+    "type": "BaselineModel",
     "args": {
-      "input_dim": 128,
-      "num_heads": 4,
-      "ffn_dim": 128,
-      "num_layers": 4,
-      "kernel_size": 31,
-      "dropout": 0.1
+      "n_feats": 128,
+      "fc_hidden": 512
     }
   },
   "data": {
