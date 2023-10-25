@@ -51,30 +51,23 @@
     "args": {
       "input_dim": 128,
       "num_heads": 4,
-      "ffn_dim": 128,
-      "num_layers": 8,
+      "ffn_dim": 256,
+      "num_layers": 16,
       "kernel_size": 31,
       "dropout": 0.1
     }
   },
   "data": {
     "train": {
-      "batch_size": 30,
+      "batch_size": 100,
       "num_workers": 5,
       "datasets": [
         {
           "type": "LibrispeechDataset",
           "args": {
-            "part": "train-clean-100",
-            "max_audio_length": 20.0,
-            "max_text_length": 200
-          },
-          "module": "hw_asr.datasets"
-        },
-        {
-          "type": "LibrispeechDataset",
-          "args": {
-            "part": "train-clean-360",
+            "data_dir": "/home/jupyter/mnt/datasets/LibriSpeech/LibriSpeech",
+            "index_dir": "/home/jupyter/work/resources/asr_hw",
+            "part": "train_all",
             "max_audio_length": 20.0,
             "max_text_length": 200
           },
@@ -83,36 +76,42 @@
       ]
     },
     "val": {
-      "batch_size": 30,
+      "batch_size": 100,
       "num_workers": 5,
       "datasets": [
         {
           "type": "LibrispeechDataset",
           "args": {
+            "data_dir": "/home/jupyter/mnt/datasets/LibriSpeech/LibriSpeech",
+            "index_dir": "/home/jupyter/work/resources/asr_hw",
             "part": "dev-clean"
           }
         }
       ]
     },
     "test-other": {
-      "batch_size": 30,
+      "batch_size": 100,
       "num_workers": 5,
       "datasets": [
         {
           "type": "LibrispeechDataset",
           "args": {
+            "data_dir": "/home/jupyter/mnt/datasets/LibriSpeech/LibriSpeech",
+            "index_dir": "/home/jupyter/work/resources/asr_hw",
             "part": "test-other"
           }
         }
       ]
     },
     "test-clean": {
-      "batch_size": 30,
+      "batch_size": 100,
       "num_workers": 5,
       "datasets": [
         {
           "type": "LibrispeechDataset",
           "args": {
+            "data_dir": "/home/jupyter/mnt/datasets/LibriSpeech/LibriSpeech",
+            "index_dir": "/home/jupyter/work/resources/asr_hw",
             "part": "test-clean"
           }
         }
@@ -160,7 +159,7 @@
   "lr_scheduler": {
     "type": "OneCycleLR",
     "args": {
-      "steps_per_epoch": 100,
+      "steps_per_epoch": 1000,
       "epochs": 50,
       "anneal_strategy": "cos",
       "max_lr": 4e-3,
@@ -177,7 +176,7 @@
     "early_stop": 100,
     "visualize": "wandb",
     "wandb_project": "dla-1-asr",
-    "len_epoch": 100,
+    "len_epoch": 1000,
     "grad_norm_clip": 10
   }
 }

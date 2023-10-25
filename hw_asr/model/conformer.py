@@ -1,5 +1,3 @@
-import typing as tp
-
 import torch
 from torch import nn
 
@@ -47,7 +45,7 @@ class ConvolutionModule(nn.Module):
             nn.Dropout(dropout),
         )
 
-    def forward(self, input: torch.Tensor) -> torch.Tensor:
+    def forward(self, input):
         x = self.norm(input)
         x = x.transpose(1, 2)
         x = self.layers(x)
@@ -67,8 +65,7 @@ class FeedForwardModule(nn.Module):
             nn.Dropout(dropout),
         )
 
-    def forward(self, input: torch.Tensor) -> torch.Tensor:
-        # return (self.layers(input) + input) * 0.5 + input
+    def forward(self, input):
         return self.layers(input) * 0.5 + input
 
 
@@ -85,9 +82,7 @@ class MultiHeadSelfAttentionModule(nn.Module):
         self.attention = nn.MultiheadAttention(input_dim, num_attention_heads, dropout)
         self.dropout = nn.Dropout(dropout)
 
-    def forward(
-        self, input: torch.Tensor, key_padding_mask: torch.Tensor
-    ) -> torch.Tensor:
+    def forward(self, input, key_padding_mask):
         x = self.norm(input)
         x, _ = self.attention(
             query=x,
@@ -129,9 +124,7 @@ class ConformerBlock(nn.Module):
 
         self.norm = nn.LayerNorm(input_dim)
 
-    def forward(
-        self, input: torch.Tensor, key_padding_mask: torch.Tensor
-    ) -> torch.Tensor:
+    def forward(self, input, key_padding_mask):
         x = self.ffn1(input)
         x = self.attention(x, key_padding_mask)
         x = self.conv(x)
@@ -169,7 +162,7 @@ class Conformer(BaseModel):
         )
         self.logits_layer = nn.Linear(in_features=input_dim, out_features=n_class)
 
-    def forward(self, spectrogram, **batch) -> tp.Dict[str, torch.Tensor]:
+    def forward(self, spectrogram, **batch):
         # spectrogram: (B, input_dim, L)
 
         max_length = torch.max(batch["spectrogram_length"]).item()
