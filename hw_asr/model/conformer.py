@@ -49,11 +49,9 @@ class ConvolutionModule(nn.Module):
 
     def forward(self, input: torch.Tensor) -> torch.Tensor:
         x = self.norm(input)
-        # x = x.transpose(0, 1)
         x = x.transpose(1, 2)
         x = self.layers(x)
         x = x.transpose(1, 2)
-        # x = x.transpose(0, 1)
         return x + input
 
 
@@ -179,7 +177,6 @@ class Conformer(BaseModel):
             batch["spectrogram_length"].size(0), max_length
         ) >= batch["spectrogram_length"].unsqueeze(1).to(spectrogram.device)
 
-        # x = spectrogram.transpose(0, 1)
         x = spectrogram.transpose(1, 2)
         for block in self.blocks:
             x = block(x, key_padding_mask.T)
