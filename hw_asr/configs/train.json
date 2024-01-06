@@ -59,8 +59,8 @@
   },
   "data": {
     "train": {
-      "batch_size": 100,
-      "num_workers": 5,
+      "batch_size": 150,
+      "num_workers": 10,
       "datasets": [
         {
           "type": "LibrispeechDataset",
@@ -74,8 +74,8 @@
       ]
     },
     "val": {
-      "batch_size": 100,
-      "num_workers": 5,
+      "batch_size": 150,
+      "num_workers": 10,
       "datasets": [
         {
           "type": "LibrispeechDataset",
@@ -85,22 +85,16 @@
         }
       ]
     },
-    "test-other": {
-      "batch_size": 100,
-      "num_workers": 5,
+    "test": {
+      "batch_size": 150,
+      "num_workers": 10,
       "datasets": [
         {
           "type": "LibrispeechDataset",
           "args": {
             "part": "test-other"
           }
-        }
-      ]
-    },
-    "test-clean": {
-      "batch_size": 100,
-      "num_workers": 5,
-      "datasets": [
+        },
         {
           "type": "LibrispeechDataset",
           "args": {
@@ -108,7 +102,6 @@
           }
         }
       ]
-    }
   },
   "optimizer": {
     "type": "Adam",
