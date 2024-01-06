@@ -80,9 +80,13 @@
         {
           "type": "LibrispeechDataset",
           "args": {
-            "max_audio_length": 20.0,
-            "max_text_length": 300,
             "part": "dev-clean"
+          }
+        },
+        {
+          "type": "LibrispeechDataset",
+          "args": {
+            "part": "dev-other"
           }
         }
       ]
@@ -94,16 +98,12 @@
         {
           "type": "LibrispeechDataset",
           "args": {
-            "max_audio_length": 20.0,
-            "max_text_length": 300,
             "part": "test-other"
           }
         },
         {
           "type": "LibrispeechDataset",
           "args": {
-            "max_audio_length": 20.0,
-            "max_text_length": 300,
             "part": "test-clean"
           }
         }
