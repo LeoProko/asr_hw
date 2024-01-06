@@ -82,16 +82,22 @@
           "args": {
             "part": "dev-clean"
           }
-        },
+        }
+      ]
+    },
+    "test-clean": {
+      "batch_size": 30,
+      "num_workers": 8,
+      "datasets": [
         {
           "type": "LibrispeechDataset",
           "args": {
-            "part": "dev-other"
+            "part": "test-clean"
           }
         }
       ]
     },
-    "test": {
+    "test-other": {
       "batch_size": 30,
       "num_workers": 8,
       "datasets": [
@@ -99,12 +105,6 @@
           "type": "LibrispeechDataset",
           "args": {
             "part": "test-other"
-          }
-        },
-        {
-          "type": "LibrispeechDataset",
-          "args": {
-            "part": "test-clean"
           }
         }
       ]
