@@ -52,7 +52,7 @@ class Trainer(BaseTrainer):
             k: v for k, v in dataloaders.items() if k != "train"
         }
         self.lr_scheduler = lr_scheduler
-        self.log_step = 50
+        self.log_step = 10
 
         self.train_metrics = MetricTracker(
             "loss", "grad norm", *[m.name for m in self.metrics], writer=self.writer
@@ -212,7 +212,6 @@ class Trainer(BaseTrainer):
         *args,
         **kwargs,
     ):
-        # TODO: implement logging of beam search results
         if self.writer is None:
             return
         argmax_inds = log_probs.cpu().argmax(-1).numpy()
