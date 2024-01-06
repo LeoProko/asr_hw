@@ -59,8 +59,8 @@
   },
   "data": {
     "train": {
-      "batch_size": 100,
-      "num_workers": 20,
+      "batch_size": 30,
+      "num_workers": 8,
       "datasets": [
         {
           "type": "LibrispeechDataset",
@@ -74,8 +74,8 @@
       ]
     },
     "val": {
-      "batch_size": 100,
-      "num_workers": 20,
+      "batch_size": 30,
+      "num_workers": 8,
       "datasets": [
         {
           "type": "LibrispeechDataset",
@@ -88,8 +88,8 @@
       ]
     },
     "test": {
-      "batch_size": 100,
-      "num_workers": 20,
+      "batch_size": 30,
+      "num_workers": 8,
       "datasets": [
         {
           "type": "LibrispeechDataset",
