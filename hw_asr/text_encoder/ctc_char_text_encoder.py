@@ -62,9 +62,13 @@ class CTCCharTextEncoder(CharTextEncoder):
                 list(sorted(new_hypos.items(), key=lambda x: -x[1]))[:beam_size]
             )
 
+        new_hypos = defaultdict(float)
+        for (prefix, prev_char), prob in hypos.items():
+            new_hypos[prefix] += prob
+
         return list(
             map(
-                lambda x: Hypothesis(text=x[0][0], prob=x[1]),
-                sorted(hypos.items(), key=lambda x: -x[1]),
+                lambda x: Hypothesis(text=x[0], prob=x[1]),
+                sorted(new_hypos.items(), key=lambda x: -x[1]),
             )
         )
