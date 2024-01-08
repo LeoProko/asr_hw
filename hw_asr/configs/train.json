@@ -81,7 +81,8 @@
           "type": "LibrispeechDataset",
           "args": {
             "part": "dev-clean"
-          }
+          },
+          "module": "hw_asr.datasets"
         }
       ]
     },
@@ -93,7 +94,8 @@
           "type": "LibrispeechDataset",
           "args": {
             "part": "test-clean"
-          }
+          },
+          "module": "hw_asr.datasets"
         }
       ]
     },
@@ -105,7 +107,8 @@
           "type": "LibrispeechDataset",
           "args": {
             "part": "test-other"
-          }
+          },
+          "module": "hw_asr.datasets"
         }
       ]
     }
