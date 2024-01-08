@@ -124,18 +124,6 @@
     "args": {}
   },
   "metrics": [
-    {
-      "type": "ArgmaxWERMetric",
-      "args": {
-        "name": "WER (argmax)"
-      }
-    },
-    {
-      "type": "ArgmaxCERMetric",
-      "args": {
-        "name": "CER (argmax)"
-      }
-    }
   ],
   "lr_scheduler": {
     "type": "OneCycleLR",
