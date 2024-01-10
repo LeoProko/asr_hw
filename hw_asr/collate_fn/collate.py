@@ -31,7 +31,13 @@ def collate_fn(dataset_items: List[dict]):
         "duration": [item["duration"] for item in dataset_items],
         "text": [item["text"] for item in dataset_items],
         "text_encoded": pad_sequence(
-            [item["text_encoded"].squeeze() for item in dataset_items], batch_first=True
+            [
+                item["text_encoded"].squeeze()
+                if item["text_encoded"].squeeze().dim() != 0
+                else torch.tensor([0], device=item["text_encoded"].device)
+                for item in dataset_items
+            ],
+            batch_first=True,
         ),
         "text_encoded_length": torch.tensor(
             [len(item["text_encoded"].squeeze()) for item in dataset_items],
