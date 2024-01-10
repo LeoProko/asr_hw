@@ -47,7 +47,12 @@ def collate_fn(dataset_items: List[dict]):
             batch_first=True,
         ),
         "text_encoded_length": torch.tensor(
-            [len(item["text_encoded"].squeeze()) for item in dataset_items],
+            [
+                len(item["text_encoded"].squeeze())
+                if item["text_encoded"].squeeze().dim() != 0
+                else 0
+                for item in dataset_items
+            ],
         ),
         "audio_path": [item["audio_path"] for item in dataset_items],
     }
