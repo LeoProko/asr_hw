@@ -52,7 +52,7 @@
       "input_dim": 128,
       "num_heads": 4,
       "ffn_dim": 512,
-      "num_layers": 8,
+      "num_layers": 16,
       "kernel_size": 31,
       "dropout": 0.1
     }
@@ -100,32 +100,6 @@
     "args": {}
   },
   "metrics": [
-    {
-      "type": "ArgmaxWERMetric",
-      "args": {
-        "name": "WER (argmax)"
-      }
-    },
-    {
-      "type": "ArgmaxCERMetric",
-      "args": {
-        "name": "CER (argmax)"
-      }
-    },
-    {
-      "type": "BeamSearchWERMetric",
-      "args": {
-        "name": "WER (beam search)",
-        "beam_size": 20
-      }
-    },
-    {
-      "type": "BeamSearchCERMetric",
-      "args": {
-        "name": "CER (beam search)",
-        "beam_size": 20
-      }
-    }
   ],
   "lr_scheduler": {
     "type": "OneCycleLR",
@@ -138,7 +112,7 @@
     }
   },
   "trainer": {
-    "beam_size": 20,
+    "beam_size": 50,
     "epochs": 50,
     "save_dir": "saved/",
     "save_period": 5,
