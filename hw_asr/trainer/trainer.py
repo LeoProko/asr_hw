@@ -243,10 +243,10 @@ class Trainer(BaseTrainer):
             raw_pred,
             audio_path,
         ) in tuples[:examples_to_log]:
-            if not is_train:
-                beam_pred = self.text_encoder.ctc_beam_search(
-                    log_prob.exp(), log_prob_length, self.config["trainer"]["beam_size"]
-                )[0].text
+            # if not is_train:
+            beam_pred = self.text_encoder.ctc_beam_search(
+                log_prob.exp(), log_prob_length, self.config["trainer"]["beam_size"]
+            )[0].text
 
             target = BaseTextEncoder.normalize_text(target)
             argmax_wer = calc_wer(target, argmax_pred) * 100
