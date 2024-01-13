@@ -15,11 +15,13 @@
       {
         "type": "Gain",
         "args": {
+          "p": 0.2
         }
       },
       {
         "type": "GaussianNoise",
         "args": {
+          "p": 0.2,
           "variance": 0.005
         }
       },
@@ -35,13 +37,14 @@
       {
         "type": "FreqMask",
         "args": {
-          "freq_mask_param": 30
+          "freq_mask_param": 80
         }
       },
       {
         "type": "TimeMask",
         "args": {
-          "time_mask_param": 30
+          "time_mask_param": 80,
+          "p": 0.2
         }
       }
     ]
@@ -49,7 +52,7 @@
   "arch": {
     "type": "Conformer",
     "args": {
-      "input_dim": 64,
+      "input_dim": 128,
       "num_heads": 4,
       "ffn_dim": 64,
       "num_layers": 4,
@@ -104,7 +107,7 @@
   "lr_scheduler": {
     "type": "OneCycleLR",
     "args": {
-      "steps_per_epoch": 100,
+      "steps_per_epoch": 10,
       "epochs": 50,
       "anneal_strategy": "cos",
       "max_lr": 3e-3,
@@ -121,7 +124,7 @@
     "early_stop": 100,
     "visualize": "wandb",
     "wandb_project": "dla-1-asr",
-    "len_epoch": 100,
+    "len_epoch": 10,
     "grad_norm_clip": 10
   }
 }
