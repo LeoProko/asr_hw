@@ -252,9 +252,9 @@ class Trainer(BaseTrainer):
             argmax_wer = calc_wer(target, argmax_pred) * 100
             argmax_cer = calc_cer(target, argmax_pred) * 100
 
-            if not is_train:
-                beam_wer = calc_wer(target, beam_pred) * 100
-                beam_cer = calc_cer(target, beam_pred) * 100
+            # if not is_train:
+            beam_wer = calc_wer(target, beam_pred) * 100
+            beam_cer = calc_cer(target, beam_pred) * 100
 
             rows[Path(audio_path).name] = {
                 "target": target,
@@ -264,10 +264,10 @@ class Trainer(BaseTrainer):
                 "argmax_cer": argmax_cer,
             }
 
-            if not is_train:
-                rows[Path(audio_path).name]["beam_pred"] = beam_pred
-                rows[Path(audio_path).name]["beam_wer"] = beam_wer
-                rows[Path(audio_path).name]["beam_cer"] = beam_cer
+            # if not is_train:
+            rows[Path(audio_path).name]["beam_pred"] = beam_pred
+            rows[Path(audio_path).name]["beam_wer"] = beam_wer
+            rows[Path(audio_path).name]["beam_cer"] = beam_cer
 
         self.writer.add_table(
             "predictions", pd.DataFrame.from_dict(rows, orient="index")
