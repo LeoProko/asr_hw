@@ -53,9 +53,9 @@
     "type": "Conformer",
     "args": {
       "input_dim": 128,
-      "num_heads": 4,
-      "ffn_dim": 64,
-      "num_layers": 4,
+      "num_heads": 8,
+      "ffn_dim": 512,
+      "num_layers": 16,
       "kernel_size": 31,
       "dropout": 0.1
     }
@@ -95,7 +95,7 @@
   "optimizer": {
     "type": "Adam",
     "args": {
-      "lr": 3e-3
+      "lr": 3e-5
     }
   },
   "loss": {
@@ -110,7 +110,7 @@
       "steps_per_epoch": 10,
       "epochs": 50,
       "anneal_strategy": "cos",
-      "max_lr": 3e-3,
+      "max_lr": 3e-5,
       "pct_start": 0.1
     }
   },
