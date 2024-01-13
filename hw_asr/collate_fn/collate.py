@@ -20,12 +20,7 @@ def collate_fn(dataset_items: List[dict]):
         batch_first=True,
     )
 
-    print(
-            [
-                item["text_encoded"].squeeze().dim()
-                for item in dataset_items
-            ]
-    )
+    print([item["text_encoded"].squeeze().dim() for item in dataset_items])
 
     return {
         "audio": pad_sequence(
