@@ -15,13 +15,13 @@
       {
         "type": "Gain",
         "args": {
-          "p": 0.5
+          "p": 0.1
         }
       },
       {
         "type": "GaussianNoise",
         "args": {
-          "p": 0.5,
+          "p": 0.1,
           "variance": 0.005
         }
       },
@@ -43,8 +43,8 @@
       {
         "type": "TimeMask",
         "args": {
-          "time_mask_param": 80,
-          "p": 0.5
+          "time_mask_param": 40,
+          "p": 0.1
         }
       }
     ]
