@@ -115,7 +115,7 @@
     }
   },
   "trainer": {
-    "beam_size": 50,
+    "beam_size": 100,
     "epochs": 50,
     "save_dir": "saved/",
     "save_period": 5,
