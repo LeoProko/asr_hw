@@ -127,11 +127,37 @@
     "args": {}
   },
   "metrics": [
+    {
+      "type": "ArgmaxWERMetric",
+      "args": {
+        "name": "WER (argmax)"
+      }
+    },
+    {
+      "type": "ArgmaxCERMetric",
+      "args": {
+        "name": "CER (argmax)"
+      }
+    },
+    {
+      "type": "BeamSearchWERMetric",
+      "args": {
+        "name": "WER (beam search)",
+        "beam_size": 10
+      }
+    },
+    {
+      "type": "BeamSearchCERMetric",
+      "args": {
+        "name": "CER (beam search)",
+        "beam_size": 10
+      }
+    }
   ],
   "lr_scheduler": {
     "type": "OneCycleLR",
     "args": {
-      "steps_per_epoch": 1000,
+      "steps_per_epoch": 2000,
       "epochs": 30,
       "anneal_strategy": "cos",
       "max_lr": 2e-3,
@@ -139,16 +165,16 @@
     }
   },
   "trainer": {
-    "beam_size": 30,
+    "beam_size": 10,
     "epochs": 30,
     "save_dir": "saved/",
     "save_period": 1,
     "verbosity": 2,
     "monitor": "min val_loss",
-    "early_stop": 1000,
+    "early_stop": 4000,
     "visualize": "wandb",
     "wandb_project": "dla-1-asr",
-    "len_epoch": 1000,
+    "len_epoch": 2000,
     "grad_norm_clip": 10
   }
 }
