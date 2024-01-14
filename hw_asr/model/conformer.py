@@ -171,6 +171,7 @@ class Conformer(BaseModel):
         ) >= batch["spectrogram_length"].unsqueeze(1).to(spectrogram.device)
 
         x = spectrogram.transpose(1, 2)
+
         for block in self.blocks:
             x = block(x, key_padding_mask.T)
 

@@ -6,23 +6,25 @@
     "spectrogram": {
       "type": "MelSpectrogram",
       "args": {
+        "n_mels": 256
       }
     },
-    "log_spec": true
+    "log_spec": false
   },
   "augmentations": {
     "wave": [
       {
         "type": "Gain",
         "args": {
-          "p": 0.1
+          "p": 0.05,
+          "sample_rate": 16000
         }
       },
       {
-        "type": "GaussianNoise",
+        "type": "ColoredNoise",
         "args": {
-          "p": 0.1,
-          "variance": 0.005
+          "p": 0.05,
+          "sample_rate": 16000
         }
       },
       {
@@ -44,7 +46,7 @@
         "type": "TimeMask",
         "args": {
           "time_mask_param": 40,
-          "p": 0.1
+          "p": 0.05
         }
       }
     ]
@@ -52,9 +54,9 @@
   "arch": {
     "type": "Conformer",
     "args": {
-      "input_dim": 128,
+      "input_dim": 256,
       "num_heads": 4,
-      "ffn_dim": 256,
+      "ffn_dim": 640,
       "num_layers": 16,
       "kernel_size": 31,
       "dropout": 0.1
@@ -153,7 +155,7 @@
     }
   },
   "trainer": {
-    "beam_size": 30,
+    "beam_size": 50,
     "epochs": 20,
     "save_dir": "saved/",
     "save_period": 1,
