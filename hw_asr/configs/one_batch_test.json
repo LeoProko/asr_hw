@@ -6,6 +6,7 @@
     "spectrogram": {
       "type": "MelSpectrogram",
       "args": {
+        "n_mels": 256
       }
     },
     "log_spec": true
@@ -53,7 +54,7 @@
   "arch": {
     "type": "Conformer",
     "args": {
-      "input_dim": 128,
+      "input_dim": 256,
       "num_heads": 4,
       "ffn_dim": 640,
       "num_layers": 16,
