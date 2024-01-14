@@ -15,23 +15,21 @@
       {
         "type": "Gain",
         "args": {
-          "p": 0.2,
-          "sample_rate": 16000
+          "p": 0.2
         }
       },
       {
         "type": "GaussianNoise",
         "args": {
           "p": 0.2,
-          "variance": 0.005,
-          "sample_rate": 16000
+          "variance": 0.005
         }
       },
       {
         "type": "ColoredNoise",
         "args": {
           "p": 0.2,
-          "sample_rate": 16000
+          "sample_rate": 32
         }
       },
       {
