@@ -127,32 +127,6 @@
     "args": {}
   },
   "metrics": [
-    {
-      "type": "ArgmaxWERMetric",
-      "args": {
-        "name": "WER (argmax)"
-      }
-    },
-    {
-      "type": "ArgmaxCERMetric",
-      "args": {
-        "name": "CER (argmax)"
-      }
-    },
-    {
-      "type": "BeamSearchWERMetric",
-      "args": {
-        "name": "WER (beam search)",
-        "beam_size": 10
-      }
-    },
-    {
-      "type": "BeamSearchCERMetric",
-      "args": {
-        "name": "CER (beam search)",
-        "beam_size": 10
-      }
-    }
   ],
   "lr_scheduler": {
     "type": "OneCycleLR",
@@ -165,7 +139,7 @@
     }
   },
   "trainer": {
-    "beam_size": 10,
+    "beam_size": 30,
     "epochs": 30,
     "save_dir": "saved/",
     "save_period": 1,
