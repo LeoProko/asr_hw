@@ -38,8 +38,7 @@
       {
         "type": "FreqMask",
         "args": {
-          "freq_mask_param": 80,
-          "p": 0.1
+          "freq_mask_param": 80
         }
       },
       {
@@ -131,7 +130,7 @@
     }
   },
   "trainer": {
-    "beam_size": 30,
+    "beam_size": 20,
     "epochs": 30,
     "save_dir": "saved/",
     "save_period": 5,
