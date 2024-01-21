@@ -137,20 +137,6 @@
       "args": {
         "name": "CER (argmax)"
       }
-    },
-    {
-      "type": "BeamSearchWERMetric",
-      "args": {
-        "name": "WER (beam search)",
-        "beam_size": 30
-      }
-    },
-    {
-      "type": "BeamSearchCERMetric",
-      "args": {
-        "name": "CER (beam search)",
-        "beam_size": 30
-      }
     }
   ],
   "lr_scheduler": {
