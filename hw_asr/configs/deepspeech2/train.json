@@ -60,7 +60,7 @@
   },
   "data": {
     "train": {
-      "batch_size": 70,
+      "batch_size": 60,
       "num_workers": 32,
       "datasets": [
         {
@@ -75,7 +75,7 @@
       ]
     },
     "val": {
-      "batch_size": 70,
+      "batch_size": 60,
       "num_workers": 32,
       "datasets": [
         {
@@ -88,7 +88,7 @@
       ]
     },
     "test-clean": {
-      "batch_size": 70,
+      "batch_size": 60,
       "num_workers": 32,
       "datasets": [
         {
@@ -101,7 +101,7 @@
       ]
     },
     "test-other": {
-      "batch_size": 70,
+      "batch_size": 60,
       "num_workers": 32,
       "datasets": [
         {
@@ -137,13 +137,25 @@
       "args": {
         "name": "CER (argmax)"
       }
+    },
+    {
+      "type": "BeamSearchWERMetric",
+      "args": {
+        "name": "WER (beam search)"
+      }
+    },
+    {
+      "type": "BeamSearchCERMetric",
+      "args": {
+        "name": "CER (beam search)"
+      }
     }
   ],
   "lr_scheduler": {
     "type": "OneCycleLR",
     "args": {
       "steps_per_epoch": 200,
-      "epochs": 30,
+      "epochs": 50,
       "anneal_strategy": "cos",
       "max_lr": 5e-4,
       "pct_start": 0.1
@@ -151,7 +163,7 @@
   },
   "trainer": {
     "beam_size": 30,
-    "epochs": 30,
+    "epochs": 50,
     "save_dir": "saved/",
     "save_period": 1,
     "verbosity": 2,
