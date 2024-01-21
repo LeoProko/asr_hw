@@ -142,7 +142,7 @@
   "lr_scheduler": {
     "type": "OneCycleLR",
     "args": {
-      "steps_per_epoch": 200,
+      "steps_per_epoch": 500,
       "epochs": 50,
       "anneal_strategy": "cos",
       "max_lr": 5e-4,
@@ -159,7 +159,7 @@
     "early_stop": 600,
     "visualize": "wandb",
     "wandb_project": "dla-1-asr",
-    "len_epoch": 200,
+    "len_epoch": 500,
     "grad_norm_clip": 10
   }
 }
