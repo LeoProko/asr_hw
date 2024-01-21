@@ -142,16 +142,16 @@
   "lr_scheduler": {
     "type": "OneCycleLR",
     "args": {
-      "steps_per_epoch": 300,
-      "epochs": 20,
+      "steps_per_epoch": 200,
+      "epochs": 30,
       "anneal_strategy": "cos",
       "max_lr": 5e-4,
       "pct_start": 0.1
     }
   },
   "trainer": {
-    "beam_size": 50,
-    "epochs": 20,
+    "beam_size": 30,
+    "epochs": 30,
     "save_dir": "saved/",
     "save_period": 1,
     "verbosity": 2,
@@ -159,7 +159,7 @@
     "early_stop": 600,
     "visualize": "wandb",
     "wandb_project": "dla-1-asr",
-    "len_epoch": 300,
+    "len_epoch": 200,
     "grad_norm_clip": 10
   }
 }
