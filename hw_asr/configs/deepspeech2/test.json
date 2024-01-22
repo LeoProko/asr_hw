@@ -22,7 +22,7 @@
   },
   "data": {
     "test": {
-      "batch_size": 50,
+      "batch_size": 10,
       "num_workers": 5,
       "datasets": [
         {
@@ -61,14 +61,14 @@
       "type": "BeamSearchWERMetric",
       "args": {
         "name": "WER (beam search)",
-        "beam_size": 10
+        "beam_size": 50
       }
     },
     {
       "type": "BeamSearchCERMetric",
       "args": {
         "name": "CER (beam search)",
-        "beam_size": 10
+        "beam_size": 50
       }
     }
   ],

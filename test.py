@@ -74,16 +74,16 @@ def main(config, out_file):
                         ),
                         "pred_text_beam_search": text_encoder.ctc_beam_search(
                             batch["probs"][i],
-                            batch["log_probs_length"][i],
-                            beam_size=10,
-                        )[:10],
+                            batch["log_probs_length"][i].item(),
+                            beam_size=50,
+                        )[0].text,
                     }
                 )
                 cer += cer_metric.calc_cer(
-                    batch["text"][i], results[-1]["pred_text_beam_search"][0].text
+                    batch["text"][i], results[-1]["pred_text_beam_search"]
                 )
                 wer += wer_metric.calc_wer(
-                    batch["text"][i], results[-1]["pred_text_beam_search"][0].text
+                    batch["text"][i], results[-1]["pred_text_beam_search"]
                 )
                 den += 1
 
@@ -154,7 +154,7 @@ if __name__ == "__main__":
 
     # first, we need to obtain config with model parameters
     # we assume it is located with checkpoint in the same folder
-    model_config = Path(args.resume).parent / "config.json"
+    model_config = Path(args.config)
     with model_config.open() as f:
         config = ConfigParser(json.load(f), resume=args.resume)
 

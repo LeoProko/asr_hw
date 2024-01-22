@@ -16,5 +16,5 @@ python3 train.py -c hw_asr/configs/deepspeech2/train.json
 # Test
 
 ```bash
-python3 test.py -r model_best.pth -c hw_asr/configs/deepspeech2/test.json
+python3 test.py -r model_best_ds2.pth -c hw_asr/configs/deepspeech2/test.json
 ```
