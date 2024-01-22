@@ -15,6 +15,10 @@ python3 train.py -c hw_asr/configs/deepspeech2/train.json
 
 # Test
 
+Скачать чекпоинт можно по ссылке
+
+https://drive.google.com/file/d/1yOyxEZHTUQ3nl_rFLy7eMLwdJMAq5Cla/view?usp=sharing
+
 ```bash
-python3 test.py -r model_best_ds2.pth -c hw_asr/configs/deepspeech2/test.json
+python3 test.py -r deepspeech2.pth -c hw_asr/configs/deepspeech2/test.json
 ```
