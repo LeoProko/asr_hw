@@ -75,7 +75,7 @@ def main(config, out_file):
                         "pred_text_beam_search": text_encoder.ctc_beam_search(
                             batch["probs"][i],
                             batch["log_probs_length"][i].item(),
-                            beam_size=100,
+                            beam_size=70,
                         )[0].text,
                     }
                 )
