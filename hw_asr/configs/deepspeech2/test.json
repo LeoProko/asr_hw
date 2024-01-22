@@ -22,7 +22,7 @@
   },
   "data": {
     "test": {
-      "batch_size": 200,
+      "batch_size": 300,
       "num_workers": 5,
       "datasets": [
         {
